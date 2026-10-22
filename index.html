@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#eeeade">
+  <meta name="description" content="一卷山水，半日清闲。轻触湖水，看墨鸟掠过清晖。">
+  <title>山水清晖 · 一卷可触碰的山水</title>
+  <link rel="icon" href="./assets/seal.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body>
+<div id="app">
+  <header class="masthead">
+    <a class="brand" href="./" aria-label="山水清晖 首页"><span class="brand-seal">清<br>晖</span><span class="brand-type">山水清晖<small>SHAN SHUI · QING HUI</small></span></a>
+    <div class="edition"><span class="edition-line"></span>一卷山水，半日清闲<span class="edition-number">卷壹 · 秋水</span></div>
+  </header>
+  <main class="gallery">
+    <div class="margin-note">观 山 有 色 · 听 水 无 声</div>
+    <section id="viewport" aria-label="交互水墨画卷。轻触湖面泛起涟漪，划过水鸟使其起飞，滚轮或双指缩放。" tabindex="0">
+      <canvas id="painting"></canvas>
+      <div id="loader"><span class="loading-seal">入境</span><p>铺纸 · 候墨</p></div>
+      <div id="load-error" hidden>画卷暂未展开，请刷新重试。<button onclick="location.reload()">重新入画</button></div>
+      <div class="corner corner-tl"></div><div class="corner corner-br"></div>
+      <div id="water-cursor" aria-hidden="true"><span></span></div>
+    </section>
+    <div class="gallery-caption"><span>水墨交互长卷 <i>／</i> 秋山入静，清晖满湖</span><span id="zoom-readout">全卷 · 100%</span></div>
+  </main>
+  <footer>
+    <div class="experience-note"><span class="small-mark">○</span><span id="interaction-hint">轻触生涟漪，拂水惊宿鸟</span><span class="hint-divider">·</span><span class="zoom-hint">滚轮缩放 · 放大后拖移</span></div>
+    <nav class="toolbar" aria-label="画卷工具栏">
+      <button id="reset" title="还原全卷（0）"><svg viewBox="0 0 24 24"><path d="M8 4H4v4m12-4h4v4M4 16v4h4m12-4v4h-4M8 8h8v8H8z"/></svg><span>还原全卷</span></button>
+      <span class="tool-separator"></span>
+      <button id="sound" aria-pressed="false" title="开启自然声音（M）"><svg viewBox="0 0 24 24"><path d="M10 5 5 9H2v6h3l5 4V5zM15 8c2 2 2 6 0 8m4-12c4 4 4 12 0 16"/><path class="mute-slash" d="m15 10 5 5m0-5-5 5"/></svg><span>自然声音</span><small id="sound-state">关</small></button>
+      <span class="tool-separator"></span>
+      <button id="save" title="保存当前画面（S）"><svg viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/></svg><span>保存画面</span></button>
+      <span class="tool-separator"></span>
+      <div class="quality-control"><button id="quality" aria-expanded="false" aria-controls="quality-menu"><svg viewBox="0 0 24 24"><path d="m12 3 3 6 6 3-6 3-3 6-3-6-6-3 6-3 3-6z"/></svg><span>画质</span><small id="quality-state">精细</small><svg class="chevron" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4"/></svg></button><div id="quality-menu" hidden role="group" aria-label="画质选择"><button data-quality="fine" aria-pressed="true"><span>精细</span><small>1.5–2× · 细赏笔墨</small></button><button data-quality="balanced" aria-pressed="false"><span>均衡</span><small>1× · 从容流畅</small></button><button data-quality="light" aria-pressed="false"><span>轻盈</span><small>0.7× · 节省电量</small></button></div></div>
+      <span class="tool-separator"></span>
+      <button id="fullscreen" aria-pressed="false" title="全屏赏画（F）"><svg viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg><span>全屏赏画</span></button>
+    </nav>
+    <div class="colophon"><span>心 随 水 静</span><span class="footer-seal">山水</span><span>万 物 有 息</span></div>
+  </footer>
+  <div id="toast" role="status" aria-live="polite"></div>
+</div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

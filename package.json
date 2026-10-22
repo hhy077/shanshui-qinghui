@@ -1,0 +1,9 @@
+{
+  "name": "shanshui-qinghui",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "山水清晖 · 可触碰的水墨长卷",
+  "scripts": { "start": "node server.mjs", "check": "node --check src/main.js && node --check src/birds.js && node --check src/audio.js", "qa": "node scripts/qa.cjs" },
+  "dependencies": { "three": "0.186.1" }
+}

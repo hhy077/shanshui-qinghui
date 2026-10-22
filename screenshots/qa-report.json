@@ -1,0 +1,65 @@
+{
+  "result": "PASS",
+  "engine": "WebKit: WebKit WebGL",
+  "desktop": {
+    "title": "山水清晖 · 一卷可触碰的山水",
+    "canvas": {
+      "width": 1957,
+      "height": 1044
+    },
+    "artworkAspectRatio": "16:9, no stretching",
+    "inventory": {
+      "waterBirds": 9,
+      "skyBirds": 5
+    },
+    "canvasRenders": 279,
+    "quality": {
+      "tiers": [
+        "fine",
+        "balanced",
+        "light"
+      ],
+      "canvasWidths": [
+        1957,
+        1305,
+        913
+      ],
+      "persisted": true
+    },
+    "ripple": {
+      "source": "pixel mask",
+      "screenPoint": "matches art coordinate",
+      "boat": "protected",
+      "emptyWater": "birds undisturbed"
+    },
+    "flock": {
+      "reacted": 4,
+      "tookFlight": 1,
+      "returnedToFixedHomes": true
+    },
+    "wheelZoom": 2.1043360464154777,
+    "naturalSound": {
+      "on": true,
+      "rms": 0.035009810276043524,
+      "calls": 1
+    },
+    "canvasExport": "PNG signature verified",
+    "fullscreen": "immersive layout entered and exited"
+  },
+  "mobile": {
+    "canvas": {
+      "width": 525,
+      "height": 790
+    },
+    "artworkAspectRatio": "16:9, letterboxed without distortion",
+    "horizontalOverflow": false,
+    "pinchZoom": 1.7826086956521738,
+    "touchRipple": "matched art coordinate"
+  },
+  "consoleFailures": 0,
+  "screenshots": [
+    "screenshots/desktop.png",
+    "screenshots/mobile.png",
+    "screenshots/fullscreen.png"
+  ]
+}

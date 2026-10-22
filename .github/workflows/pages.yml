@@ -1,0 +1,43 @@
+name: Deploy 山水清晖 to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Assemble runtime-only website
+        run: |
+          mkdir -p _site/assets _site/src _site/vendor
+          cp index.html style.css .nojekyll _site/
+          cp assets/landscape.webp assets/water-mask.png assets/reflection.png assets/ink-kai.woff2 assets/seal.svg _site/assets/
+          cp src/main.js src/birds.js src/audio.js src/shaders.js _site/src/
+          cp vendor/three.module.js vendor/three.core.js _site/vendor/
+      - name: Upload static site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
