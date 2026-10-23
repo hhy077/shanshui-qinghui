@@ -44,7 +44,7 @@ async function initialize(){
   renderer.setAnimationLoop(render);
   // Read-only inspection interface for interaction QA, coordinate probes and screenshots.
   window.__SHANSHUI={
-    get state(){return {...state,ripples:state.ripples.map(r=>({...r})),birds:birds.snapshot(),skyCount:birds.sky.length,sound:sound.enabled,audioState:sound.context?.state||'uninitialized',audioCalls:sound.calls,audioRms:sound.rms(),camera:{x:camera.position.x,y:camera.position.y,zoom:camera.zoom},renderCalls:renderer.info.render.calls};},
+    get state(){return {...state,ripples:state.ripples.map(r=>({...r})),birds:birds.snapshot(),skyCount:birds.sky.length,sound:sound.enabled,audioState:sound.context?.state||'uninitialized',audioCalls:sound.calls,audioRms:sound.rms(),audioPeak:sound.peak(),camera:{x:camera.position.x,y:camera.position.y,zoom:camera.zoom},renderCalls:renderer.info.render.calls};},
     project(u,v){const p=new THREE.Vector3(u*16,(1-v)*9,0).project(camera),r=canvas.getBoundingClientRect();return {x:r.left+(p.x+1)*.5*r.width,y:r.top+(1-p.y)*.5*r.height};},
     isWater
   };

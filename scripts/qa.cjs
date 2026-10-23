@@ -67,8 +67,8 @@ async function run(){
 
   await desktop.locator('#sound').click();await desktop.waitForFunction(()=>window.__SHANSHUI.state.audioState==='running');
   await desktop.waitForTimeout(800);
-  const sound=await desktop.evaluate(()=>({on:window.__SHANSHUI.state.sound,rms:window.__SHANSHUI.state.audioRms,calls:window.__SHANSHUI.state.audioCalls}));
-  if(!sound.on||sound.calls<1||sound.rms<.00001)throw new Error('Synthesized soundscape did not produce active audio');
+  const sound=await desktop.evaluate(()=>({on:window.__SHANSHUI.state.sound,rms:window.__SHANSHUI.state.audioRms,peak:window.__SHANSHUI.state.audioPeak,calls:window.__SHANSHUI.state.audioCalls}));
+  if(!sound.on||sound.calls<1||sound.rms<.00001||sound.rms>.01||sound.peak>.2)throw new Error(`Synthesized soundscape is silent, too loud or clipped: ${JSON.stringify(sound)}`);
   await desktop.locator('#sound').click();
 
   const [download]=await Promise.all([desktop.waitForEvent('download'),desktop.locator('#save').click()]);
