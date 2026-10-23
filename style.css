@@ -36,6 +36,8 @@
   margin: auto;
   padding: .8rem 1rem;
   display: grid;
+  align-content: initial;
+  justify-items: initial;
   gap: .25rem;
   color: #48473f;
   text-align: center;
