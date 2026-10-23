@@ -19,9 +19,10 @@
   <main class="gallery">
     <div class="margin-note">观 山 有 色 · 听 水 无 声</div>
     <section id="viewport" aria-label="交互水墨画卷。轻触湖面泛起涟漪，划过水鸟使其起飞，滚轮或双指缩放。" tabindex="0">
+      <img id="painting-fallback" src="./assets/landscape.webp" alt="山水清晖水墨画卷">
       <canvas id="painting"></canvas>
       <div id="loader"><span class="loading-seal">入境</span><p>铺纸 · 候墨</p></div>
-      <div id="load-error" hidden>画卷暂未展开，请刷新重试。<button onclick="location.reload()">重新入画</button></div>
+      <div id="load-error" hidden role="status"><strong>水墨画卷已为你展开</strong><span id="load-error-detail">当前浏览器无法启动交互画面，仍可欣赏完整画作。请尝试使用系统浏览器打开。</span></div>
       <div class="corner corner-tl"></div><div class="corner corner-br"></div>
       <div id="water-cursor" aria-hidden="true"><span></span></div>
     </section>
@@ -44,6 +45,15 @@
   </footer>
   <div id="toast" role="status" aria-live="polite"></div>
 </div>
+<script>
+  // Modules unsupported or blocked before main.js runs must not leave the loading seal forever.
+  window.__shanshuiBootWatchdog = setTimeout(() => {
+    if (document.documentElement.dataset.shanshuiReady === 'true') return;
+    document.querySelector('#loader').hidden = true;
+    document.querySelector('#load-error').hidden = false;
+    document.querySelector('#load-error-detail').textContent = '交互组件未能在 15 秒内启动。画作仍可欣赏；请检查网络，或使用最新版 Chrome、Edge、Safari 打开。';
+  }, 15000);
+</script>
 <script type="module" src="./src/main.js"></script>
 </body>
 </html>

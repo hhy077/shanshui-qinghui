@@ -18,3 +18,31 @@
 #app:fullscreen .toolbar{height:56px;gap:28px;width:max-content;max-width:100%;margin:auto;border-bottom:0}
 #app:fullscreen #quality-menu{bottom:53px}
 @media(max-width:700px){#app:fullscreen{padding:5px 10px 4px;grid-template-rows:minmax(0,1fr) 54px}#app:fullscreen .gallery-caption{height:21px}#app:fullscreen .toolbar{height:50px;width:100%;gap:0;padding:0 4px}#app:fullscreen .toolbar button{padding:6px 4px;gap:4px;font-size:9px}#app:fullscreen .toolbar svg{width:17px;height:17px}#app:fullscreen #quality-menu{bottom:46px}}
+#painting-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 0;
+}
+#painting { position: relative; z-index: 1; opacity: 0; transition: opacity .5s ease; }
+#viewport.is-ready #painting { opacity: 1; }
+#loader, #load-error { z-index: 2; }
+#load-error {
+  position: absolute;
+  inset: auto 1rem 1rem;
+  max-width: 30rem;
+  margin: auto;
+  padding: .8rem 1rem;
+  display: grid;
+  gap: .25rem;
+  color: #48473f;
+  text-align: center;
+  font-size: .8rem;
+  line-height: 1.6;
+  background: rgb(245 242 231 / 92%);
+  border: 1px solid rgb(126 111 82 / 28%);
+  box-shadow: 0 3px 18px rgb(62 53 39 / 8%);
+}
+#load-error[hidden] { display: none; }

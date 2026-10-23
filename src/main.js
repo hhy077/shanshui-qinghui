@@ -15,7 +15,15 @@ const raycaster=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,
 const rippleUniform=Array.from({length:12},()=>new THREE.Vector4(0,0,-100,0));
 let toastTimer;
 function toast(message){$('#toast').textContent=message;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2600);}
-function onError(error){console.error(error);$('#loader').hidden=true;$('#load-error').hidden=false;}
+function onError(error){
+  console.error('[山水清晖] 交互画面启动失败',error);
+  clearTimeout(window.__shanshuiBootWatchdog);
+  $('#loader').hidden=true;
+  $('#load-error-detail').textContent=/WebGL/i.test(`${error?.name||''} ${error?.message||''}`)
+    ?'此浏览器或设备未开放 WebGL 图形加速。完整画作仍可欣赏，请在系统浏览器中开启硬件加速后重试。'
+    :'交互组件或画面素材加载失败。完整画作仍可欣赏，请检查网络后刷新，或使用最新版 Chrome、Edge、Safari。';
+  $('#load-error').hidden=false;
+}
 async function texture(path,color=true){const t=await new THREE.TextureLoader().loadAsync(path);if(color)t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return t;}
 async function initialize(){
   renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,preserveDrawingBuffer:true,powerPreference:'high-performance'});
@@ -32,7 +40,7 @@ async function initialize(){
   birds=new Birds(scene,{ripple:addRipple,sound});
   await document.fonts.load('40px InkKai');
   createInscription();resize();bindControls();
-  state.ready=true;$('#loader').classList.add('leaving');setTimeout(()=>$('#loader').hidden=true,1000);
+  state.ready=true;document.documentElement.dataset.shanshuiReady='true';clearTimeout(window.__shanshuiBootWatchdog);viewport.classList.add('is-ready');$('#load-error').hidden=true;$('#loader').classList.add('leaving');setTimeout(()=>$('#loader').hidden=true,1000);
   renderer.setAnimationLoop(render);
   // Read-only inspection interface for interaction QA, coordinate probes and screenshots.
   window.__SHANSHUI={
