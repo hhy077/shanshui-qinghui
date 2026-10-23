@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {Birds} from './birds.js';
 import {Soundscape} from './audio.js';
-import {vertexShader,waterFragment} from './shaders.js';
+import {vertexShader,waterFragment,paperFragment} from './shaders.js';
 
 const $=s=>document.querySelector(s);
 const viewport=$('#viewport'),canvas=$('#painting'),sound=new Soundscape();
@@ -37,10 +37,12 @@ async function initialize(){
   const paper=new THREE.Mesh(geometry,new THREE.MeshBasicMaterial({map:art}));paper.position.set(8,4.5,0);scene.add(paper);
   water=new THREE.Mesh(geometry,new THREE.ShaderMaterial({vertexShader,fragmentShader:waterFragment,uniforms:{uArt:{value:art},uMask:{value:mask},uReflection:{value:reflection},uTime:{value:0},uRipples:{value:rippleUniform}},transparent:true,depthWrite:false}));
   water.position.set(8,4.5,.05);scene.add(water);
+  const paperVeil=new THREE.Mesh(geometry,new THREE.ShaderMaterial({vertexShader,fragmentShader:paperFragment,transparent:true,depthWrite:false}));
+  paperVeil.position.set(8,4.5,.15);scene.add(paperVeil);
   birds=new Birds(scene,{ripple:addRipple,sound});
   await document.fonts.load('40px InkKai');
   createInscription();resize();bindControls();
-  state.ready=true;document.documentElement.dataset.shanshuiReady='true';clearTimeout(window.__shanshuiBootWatchdog);viewport.classList.add('is-ready');$('#load-error').hidden=true;$('#loader').classList.add('leaving');setTimeout(()=>$('#loader').hidden=true,1000);
+  state.ready=true;document.documentElement.dataset.shanshuiReady='true';clearTimeout(window.__shanshuiBootWatchdog);viewport.classList.add('is-ready','is-unrolling');$('#load-error').hidden=true;$('#loader').classList.add('leaving');setTimeout(()=>{ $('#loader').hidden=true;viewport.classList.remove('is-unrolling'); },2350);
   renderer.setAnimationLoop(render);
   // Read-only inspection interface for interaction QA, coordinate probes and screenshots.
   window.__SHANSHUI={
@@ -72,7 +74,7 @@ function addRipple(u,v,strength=.85){
 }
 function disturbAt(p,strength=.85){
   if(!p||!isWater(p.u,p.v))return;
-  if(addRipple(p.u,p.v,strength))sound.water(strength);
+  addRipple(p.u,p.v,strength);
   const count=birds.disturb(p.u,p.v,state.time);state.disturbed+=count;
 }
 function screenToArt(clientX,clientY){
@@ -82,6 +84,11 @@ function screenToArt(clientX,clientY){
 }
 function resize(){
   const w=viewport.clientWidth,h=viewport.clientHeight;
+  const artScale=Math.min(w/16,h/9);
+  viewport.style.setProperty('--art-left',`${(w-artScale*16)/2}px`);
+  viewport.style.setProperty('--art-top',`${(h-artScale*9)/2}px`);
+  viewport.style.setProperty('--art-width',`${artScale*16}px`);
+  viewport.style.setProperty('--art-height',`${artScale*9}px`);
   const dpr=window.devicePixelRatio||1;
   const ratios={fine:Math.min(2,Math.max(1.5,dpr*1.5)),balanced:Math.min(1.25,dpr),light:Math.max(.7,Math.min(.8,dpr*.7))};
   renderer.setPixelRatio(ratios[state.quality]);

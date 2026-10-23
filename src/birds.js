@@ -66,7 +66,7 @@ export class Birds {
         else if(t<2.5){b.state='takeoff';activity=smooth(.75,1.2,t);}
         else if(t<9){b.state='flight';activity=1;}
         else if(t<12.8){b.state='landing';activity=1-smooth(11.5,12.8,t);}
-        else{b.state='rest';b.start=Infinity;b.cycles++;this.ripple(b.home.u,b.home.v,.38);this.sound.water(.4);}
+        else{b.state='rest';b.start=Infinity;b.cycles++;this.ripple(b.home.u,b.home.v,.38);}
         if(t>=.75&&t<12.8){
           const p=(t-.75)/12.05;
           excursion=Math.sin(Math.PI*p)*(.8+.12*Math.sin(p*6.28+b.phase));

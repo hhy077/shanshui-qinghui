@@ -45,13 +45,6 @@ export class Soundscape {
       osc.connect(g).connect(this.master);osc.start(start);osc.stop(start+.24);
     }
   }
-  water(strength=.7){
-    if(!this.enabled)return;
-    const c=this.context,t=c.currentTime,osc=c.createOscillator(),g=c.createGain();
-    osc.type='sine';osc.frequency.setValueAtTime(520,t);osc.frequency.exponentialRampToValueAtTime(140,t+.2);
-    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.011*strength,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.52);
-    osc.connect(g).connect(this.master);osc.start();osc.stop(t+.5);
-  }
   flap(strength=.6){
     if(!this.enabled)return;
     const c=this.context,t=c.currentTime,n=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();

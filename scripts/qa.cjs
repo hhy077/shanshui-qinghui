@@ -11,7 +11,8 @@ async function run(){
   const failuresBefore=failures.length;
   await desktop.goto('http://localhost:5178',{waitUntil:'networkidle'});
   await desktop.waitForFunction(()=>window.__SHANSHUI?.state.ready,{timeout:30000});
-  await desktop.waitForTimeout(1100);
+  await desktop.waitForFunction(()=>!document.querySelector('#viewport').classList.contains('is-unrolling'));
+  await desktop.waitForTimeout(100);
   await desktop.screenshot({path:path.join(__dirname,'..','screenshots','desktop.png'),fullPage:true});
   const render=await desktop.evaluate(()=>({title:document.title,canvas:{width:document.querySelector('canvas').width,height:document.querySelector('canvas').height},viewport:document.querySelector('#viewport').getBoundingClientRect().toJSON(),state:window.__SHANSHUI.state,fonts:document.fonts.check('40px InkKai')}));
   if(!render.state.ready||render.state.renderCalls<2)throw new Error('Scene did not complete an animated render');
@@ -69,6 +70,10 @@ async function run(){
   await desktop.waitForTimeout(800);
   const sound=await desktop.evaluate(()=>({on:window.__SHANSHUI.state.sound,rms:window.__SHANSHUI.state.audioRms,peak:window.__SHANSHUI.state.audioPeak,calls:window.__SHANSHUI.state.audioCalls}));
   if(!sound.on||sound.calls<1||sound.rms<.00001||sound.rms>.01||sound.peak>.2)throw new Error(`Synthesized soundscape is silent, too loud or clipped: ${JSON.stringify(sound)}`);
+  const callsBeforeRipple=await desktop.evaluate(()=>window.__SHANSHUI.state.audioCalls);
+  await desktop.mouse.click(water.x,water.y);
+  const callsAfterRipple=await desktop.evaluate(()=>window.__SHANSHUI.state.audioCalls);
+  if(callsAfterRipple!==callsBeforeRipple)throw new Error('Water ripple triggered an audio cue');
   await desktop.locator('#sound').click();
 
   const [download]=await Promise.all([desktop.waitForEvent('download'),desktop.locator('#save').click()]);
@@ -94,7 +99,8 @@ async function run(){
   mobile.on('pageerror',e=>failures.push('mobile pageerror: '+e.message));
   await mobile.goto('http://localhost:5178',{waitUntil:'networkidle'});
   await mobile.waitForFunction(()=>window.__SHANSHUI?.state.ready,{timeout:30000});
-  await mobile.waitForTimeout(1100);
+  await mobile.waitForFunction(()=>!document.querySelector('#viewport').classList.contains('is-unrolling'));
+  await mobile.waitForTimeout(100);
   await mobile.screenshot({path:path.join(__dirname,'..','screenshots','mobile.png'),fullPage:true});
   const mobileState=await mobile.evaluate(()=>({viewport:document.querySelector('#viewport').getBoundingClientRect().toJSON(),canvas:{width:document.querySelector('canvas').width,height:document.querySelector('canvas').height},state:window.__SHANSHUI.state,overflow:document.documentElement.scrollWidth>innerWidth}));
   const pinchStart=await mobile.evaluate(()=>{

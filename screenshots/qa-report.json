@@ -12,7 +12,7 @@
       "waterBirds": 9,
       "skyBirds": 5
     },
-    "canvasRenders": 279,
+    "canvasRenders": 280,
     "quality": {
       "tiers": [
         "fine",
@@ -40,7 +40,8 @@
     "wheelZoom": 2.1043360464154777,
     "naturalSound": {
       "on": true,
-      "rms": 0.035009810276043524,
+      "rms": 0.0002921841218719302,
+      "peak": 0.0005904695717617869,
       "calls": 1
     },
     "canvasExport": "PNG signature verified",

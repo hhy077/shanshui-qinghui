@@ -43,8 +43,8 @@ alpha = (matte * fade * np.clip((ink - .015) * 1.9, 0, .32)).astype(np.uint8)
 rgba = Image.fromarray(np.dstack((reflected, alpha)), 'RGBA')
 rgba.save(ROOT / 'assets/reflection.png', optimize=True)
 
-# Make the navigational layer fast to download while retaining the original master.
-preview = source.resize((1536, 864), Image.Resampling.LANCZOS)
-preview.save(ROOT / 'assets/landscape.webp', 'WEBP', quality=88, method=6)
+# Preserve the master's fine roof lines, rock texture and dry brush strokes.
+# WebP still keeps the full-resolution painting comfortably below one megabyte.
+source.save(ROOT / 'assets/landscape.webp', 'WEBP', quality=96, method=6)
 
 print(f'landscape={w}x{h}, water pixels={(matte > 220).sum()}, reflection coverage={(alpha > 0).sum()}')

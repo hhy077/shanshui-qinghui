@@ -2,6 +2,20 @@ export const vertexShader = `
 varying vec2 vUv;
 void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }
 `;
+
+export const paperFragment = `
+precision highp float;
+varying vec2 vUv;
+void main(){
+  vec2 coarse=floor(vUv*vec2(1500.0,900.0));
+  vec2 fine=floor(vUv*vec2(3200.0,1900.0));
+  float grain=fract(sin(dot(coarse,vec2(12.9898,78.233)))*43758.5453);
+  float fibre=fract(sin(dot(fine,vec2(31.17,11.73)))*17943.17);
+  float edge=pow(clamp(distance(vUv,vec2(.5))*1.35,0.0,1.0),2.2);
+  float alpha=clamp(.017+(grain-.5)*.018+(fibre-.5)*.008+edge*.022,.006,.065);
+  gl_FragColor=vec4(vec3(.31,.27,.19),alpha);
+}
+`;
 export const waterFragment = `
 precision highp float;
 uniform sampler2D uArt;
